@@ -1,0 +1,39 @@
+{
+    "description": "Enables BLE connectivity on the Arduino MKR WiFi 1010, Arduino UNO WiFi Rev.2, Arduino Nano 33 IoT, and Arduino Nano 33 BLE.", 
+    "repository": {
+        "url": "https://github.com/arduino-libraries/ArduinoBLE", 
+        "type": "git"
+    }, 
+    "platforms": [
+        "atmelsam"
+    ], 
+    "export": {
+        "exclude": [
+            "extras", 
+            "docs", 
+            "tests", 
+            "test", 
+            "*.doxyfile", 
+            "*.pdf"
+        ], 
+        "include": null
+    }, 
+    "authors": [
+        {
+            "maintainer": true, 
+            "name": "Arduino", 
+            "url": null, 
+            "email": "info@arduino.cc"
+        }
+    ], 
+    "keywords": [
+        "communication"
+    ], 
+    "id": 5878, 
+    "name": "ArduinoBLE", 
+    "frameworks": [
+        "arduino"
+    ], 
+    "version": "1.1.2", 
+    "homepage": "https://www.arduino.cc/en/Reference/ArduinoBLE"
+}
