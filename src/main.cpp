@@ -102,14 +102,17 @@ void loop()
                         gxFloat.writeValue(gX);
                         gyFloat.writeValue(gY);
                         gzFloat.writeValue(gZ);               
-                        delay(200);
                         samplesRead++;
+                        Serial.print("Samples Read = "); 
+                        Serial.println(samplesRead);
+                        
                         if (samplesRead == numSamples) {
                                // add an empty line if it's the last sample
                                Serial.println();
                         }                       
                   }
             }
+            delay(200);
       }
       digitalWrite(LED_BUILTIN, LOW);
       Serial.print("Disconnected from central: ");
