@@ -4,13 +4,13 @@
 BLEService batteryService("180F");
 BLEUnsignedCharCharacteristic batteryLevelChar("2A19", BLERead | BLENotify);
 
-BLEService IMUService("1801");
-BLEFloatCharacteristic axFloat("2A20", BLERead | BLENotify);
-BLEFloatCharacteristic ayFloat("2A21", BLERead | BLENotify);
-BLEFloatCharacteristic azFloat("2A22", BLERead | BLENotify);
-BLEFloatCharacteristic gxFloat("2A23", BLERead | BLENotify);
-BLEFloatCharacteristic gyFloat("2A24", BLERead | BLENotify);
-BLEFloatCharacteristic gzFloat("2A25", BLERead | BLENotify);
+// BLEService IMUService("1801");
+// BLEUnsignedCharCharacteristic axFloat("2A05", BLERead | BLENotify);
+// BLEFloatCharacteristic ayFloat("2A58", BLERead | BLENotify);
+// BLEFloatCharacteristic azFloat("2A59", BLERead | BLENotify);
+// BLEFloatCharacteristic gxFloat("2A60", BLERead | BLENotify);
+// BLEFloatCharacteristic gyFloat("2A61", BLERead | BLENotify);
+// BLEFloatCharacteristic gzFloat("2A62", BLERead | BLENotify);
 
 const int numSamples = 119;
 
@@ -49,14 +49,14 @@ void setup()
       batteryService.addCharacteristic(batteryLevelChar);
       BLE.addService(batteryService);
 
-      BLE.setAdvertisedService(IMUService);
-      IMUService.addCharacteristic(axFloat);
-      IMUService.addCharacteristic(ayFloat);
-      IMUService.addCharacteristic(azFloat);
-      IMUService.addCharacteristic(gxFloat);
-      IMUService.addCharacteristic(gyFloat);
-      IMUService.addCharacteristic(gzFloat);
-      BLE.addService(IMUService);
+      // BLE.setAdvertisedService(IMUService);
+      // IMUService.addCharacteristic(axFloat);
+      // // IMUService.addCharacteristic(ayFloat);
+      // // IMUService.addCharacteristic(azFloat);
+      // // IMUService.addCharacteristic(gxFloat);
+      // // IMUService.addCharacteristic(gyFloat);
+      // // IMUService.addCharacteristic(gzFloat);
+      // BLE.addService(IMUService);
 
       BLE.advertise();
       Serial.println("Bluetooth device active, waiting for connections...");
@@ -69,49 +69,62 @@ void loop()
 
       if (central)
       {
-            Serial.print("Connected to central: ");
-            Serial.println(central.address());
-            digitalWrite(LED_BUILTIN, HIGH);
-            while (central.connected())
-            {
-                  // wait for significant motion
-                  while (samplesRead == numSamples) {
-                        // read the state of the pushbutton value:
-                        buttonState = digitalRead(buttonPin);
-                        // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
-                        if ((buttonState == HIGH) && (samplesRead == numSamples)) {
-                              // turn LED on:
-                              digitalWrite(ledPin, HIGH);
-                              samplesRead = 0;
-                        } else {
-                              // turn LED off:
-                              digitalWrite(ledPin, LOW);
-                        }
-                  }
-                  while (samplesRead < numSamples) {
-                        int battery = analogRead(A0);
-                        int batteryLevel = map(battery, 0, 1023, 0, 100);
-                        Serial.print("Battery Level % is now: ");
+            // Serial.print("Connected to central: ");
+            // Serial.println(central.address());
+            // digitalWrite(LED_BUILTIN, HIGH);
+            // while (central.connected())
+            // {
+            //       // wait for significant motion
+            //       while (samplesRead == numSamples) {
+            //             int battery = analogRead(A0);
+            //             int batteryLevel = map(battery, 0, 1023, 0, 100);
+            //             Serial.print("Battery Level % is now: ");
+            //             Serial.println(batteryLevel);
+            //             batteryLevelChar.writeValue(batteryLevel);
+            //             // read the state of the pushbutton value:
+            //             buttonState = digitalRead(buttonPin);
+            //             // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
+            //             if ((buttonState == HIGH) && (samplesRead == numSamples)) {
+            //                   // turn LED on:
+            //                   digitalWrite(ledPin, HIGH);
+            //                   samplesRead = 0;
+            //             } else {
+            //                   // turn LED off:
+            //                   digitalWrite(ledPin, LOW);
+            //             }
+            //             delay(200);
+            //       }
+            //       while (samplesRead < numSamples) {
+                        // int battery = analogRead(A0);
+                        // int batteryLevel = map(battery, 0, 1023, 0, 100);
+                        // Serial.print("Battery Level % is now: ");
+                        // Serial.println(batteryLevel);
+                         IMU.readAcceleration(aX, aY, aZ);
+                        // IMU.readGyroscope(gX, gY, gZ);
+                        //  axFloat.writeValue(aX);
+                        int batteryLevel = map(aX, -4.0, 4.0, 0, 100);
+                        Serial.print("Acceleration X is now: ");
                         Serial.println(batteryLevel);
+
                         batteryLevelChar.writeValue(batteryLevel);
-                        IMU.readAcceleration(aX, aY, aZ);
-                        IMU.readGyroscope(gX, gY, gZ);
-                        axFloat.writeValue(aX);
-                        ayFloat.writeValue(aY);
-                        azFloat.writeValue(aZ);
-                        gxFloat.writeValue(gX);
-                        gyFloat.writeValue(gY);
-                        gzFloat.writeValue(gZ);               
-                        samplesRead++;
-                        Serial.print("Samples Read = "); 
-                        Serial.println(samplesRead);
+                       
+          
+                        // ayFloat.writeValue(aY);
+                        // azFloat.writeValue(aZ);
+                        // gxFloat.writeValue(gX);
+                        // gyFloat.writeValue(gY);
+                        // gzFloat.writeValue(gZ);               
+            //             samplesRead++;
+            //             Serial.print("Samples Read = "); 
+            //             Serial.println(samplesRead);
                         
-                        if (samplesRead == numSamples) {
-                               // add an empty line if it's the last sample
-                               Serial.println();
-                        }                       
-                  }
-            }
+            //             if (samplesRead == numSamples) {
+            //                    // add an empty line if it's the last sample
+            //                    Serial.println();
+            //             }    
+            //             delay(200);                   
+            //       }
+            // }
             delay(200);
       }
       digitalWrite(LED_BUILTIN, LOW);
